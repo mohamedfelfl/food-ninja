@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     use response;
 
-    public function save(Request $request)
+    public function save(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate([
             'name' => 'required',
@@ -44,4 +44,22 @@ class UserController extends Controller
         }
 
     }
+
+    public function login(Request $request){
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        $user = User::where('email', $request->input('email'))->first();
+        if($user){
+            return $this->jsonResponseMessage('User does not exist', true);
+        }else{
+            if(Hash::check($request->input('password'), $user->password)){
+                return $this->jsonResponseMessage('Login Successful', true);
+            }else{
+                return $this->jsonResponseMessage('Invalid Password', true);
+            }
+        }
+    }
+
 }
