@@ -20,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::group(['prefix' => 'user',], function () {
     Route::post('/save', [UserController::class, 'save']);
-    Route::post('/verify', [UserController::class, 'verifyUser']);
+    Route::post('/login', [UserController::class, 'login']);
     Route::middleware('auth:sanctum')->post('/mail', [UserController::class, 'changeEmail']);
 });
