@@ -56,10 +56,10 @@ class UserController extends Controller
             if(Hash::check($request->input('password'), $user->password)){
                 return $this->jsonResponseMessage('Login Successful', true);
             }else{
-                return $this->jsonResponseMessage('Invalid Password', true);
+                return $this->jsonResponseMessage('Invalid Password', false);
             }
         }else{
-            return $this->jsonResponseMessage('User does not exist', true);
+            return $this->jsonResponseMessage('User does not exist', false);
         }
     }
 
