@@ -28,8 +28,6 @@ class UserController extends Controller
             $user->name = $request->input('name');
             $user->email = $request->input('email');
             $user->password = Hash::make($request->input('password'));
-            $token = $user->createToken("token")->plainTextToken;
-            $user->token = $token;
             //$user->addresses = $request->input('addresses');
             /*            $data = [
                             'name' => $user->name,
@@ -37,11 +35,12 @@ class UserController extends Controller
                             'verification_code' => $verificationCode,
                         ];*/
             if ($user->save()) {
+                $token = $user->createToken("token")->plainTextToken;
                 //MailController::sendEmail($data);
                 return $this->jsonResponseMessage('User saved successfully', data: [
                     'name' => $user->name,
                     'email' => $user->email,
-                    'token' => $user->token
+                    'token' => $token
                 ]);
             } else {
                 return $this->jsonResponseMessage('Something went wrong', false);
@@ -50,6 +49,10 @@ class UserController extends Controller
 
     }
 
+    public function getUserData(Request $request)
+    {
+        return $request->user();
+    }
     public function login(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate([
@@ -59,11 +62,11 @@ class UserController extends Controller
         $user = User::where('email', $request->input('email'))->first();
         if($user){
             if(Hash::check($request->input('password'), $user->password)){
+                $token = $user->createToken("token")->plainTextToken;
                 return $this->jsonResponseMessage('Login Successful', true, data: [
                     'name' => $user->name,
                     'email' => $user->email,
-                    'phone' => $user->phone,
-                    'token' => $user->token
+                    'token' => $token
                 ]);
             }else{
                 return $this->jsonResponseMessage('Invalid Password', false);
