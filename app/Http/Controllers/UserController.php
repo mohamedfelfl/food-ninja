@@ -28,7 +28,7 @@ class UserController extends Controller
             $user->name = $request->input('name');
             $user->email = $request->input('email');
             $user->password = Hash::make($request->input('password'));
-            $token = $request->user()->createToken("token")->plainTextToken;
+            $token = $user->createToken("token")->plainTextToken;
             $user->token = $token;
             //$user->addresses = $request->input('addresses');
             /*            $data = [
