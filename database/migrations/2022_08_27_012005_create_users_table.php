@@ -17,6 +17,9 @@ return new class extends Migration {
             $table->string("name");
             $table->string("email")->unique();
             $table->string("password");
+            $table->string("phone");
+            $table->boolean("gold_member");
+            $table->string("token");
             $table->timestamps();
         });
     }
