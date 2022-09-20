@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use App\Traits\response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 
 class UserController extends Controller
 {
     use response;
 
-    public function save(Request $request): \Illuminate\Http\JsonResponse
+    public function save(Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required',
@@ -53,27 +57,54 @@ class UserController extends Controller
     {
         return $request->user();
     }
-    public function login(Request $request): \Illuminate\Http\JsonResponse
+
+    public function login(Request $request): JsonResponse
     {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
         $user = User::where('email', $request->input('email'))->first();
-        if($user){
-            if(Hash::check($request->input('password'), $user->password)){
+        if ($user) {
+            if (Hash::check($request->input('password'), $user->password)) {
                 $token = $user->createToken("token")->plainTextToken;
                 return $this->jsonResponseMessage('Login Successful', true, data: [
                     'name' => $user->name,
                     'email' => $user->email,
                     'token' => $token
                 ]);
-            }else{
+            } else {
                 return $this->jsonResponseMessage('Invalid Password', false);
             }
-        }else{
+        } else {
             return $this->jsonResponseMessage('User does not exist', false);
         }
     }
+
+    public function sendMail(Request $request): JsonResponse
+    {
+        $request->validate(['email' => 'email|required']);
+        $user = User::where('email', $request->input('email'))->first();
+        if ($user) {
+            Mail::to($user)->send(new ResetPasswordMail($user->name));
+            return $this->jsonResponseMessage('Password reset link has been sent. Check your inbox');
+        } else {
+            return $this->jsonResponseMessage('User does not exist. Please try again', success: false);
+        }
+
+    }
+
+    public function resetPassword(Request $request): JsonResponse
+    {
+        $request->validate(['email' => 'required|email']);
+        $status = Password::sendResetLink($request->only('email'));
+        return match ($status) {
+            Password::RESET_LINK_SENT => $this->jsonResponseMessage('Password reset link has been sent successfully. Check your inbox'),
+            Password::INVALID_USER => $this->jsonResponseMessage('Invalid user, please try again', false),
+            Password::RESET_THROTTLED => $this->jsonResponseMessage("Link has already been sent. Please try again", false),
+            default => $this->jsonResponseMessage('Internal Error', false),
+        };
+    }
+
 
 }
