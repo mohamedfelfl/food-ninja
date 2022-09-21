@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ResetPasswordMail;
+use App\Models\Offer;
 use App\Models\User;
 use App\Traits\response;
 use Illuminate\Http\JsonResponse;
@@ -44,7 +45,8 @@ class UserController extends Controller
                 return $this->jsonResponseMessage('User saved successfully', data: [
                     'name' => $user->name,
                     'email' => $user->email,
-                    'token' => $token
+                    'token' => $token,
+                    'offers' => OffersController::allOffers(),
                 ]);
             } else {
                 return $this->jsonResponseMessage('Something went wrong', false);
@@ -53,9 +55,35 @@ class UserController extends Controller
 
     }
 
-    public function getUserData(Request $request)
+    public function customLogin(Request $request)
     {
-        return $request->user();
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+        ]);
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        if ($user->save()) {
+            $token = $user->createToken("token")->plainTextToken;
+            //MailController::sendEmail($data);
+            return $this->jsonResponseMessage('User saved successfully', data: [
+                'name' => $user->name,
+                'email' => $user->email,
+                'token' => $token,
+                'offers' => OffersController::allOffers(),
+                ]);
+            } else {
+                return $this->jsonResponseMessage('Something went wrong', false);
+            }
+    }
+
+    public function getUserData(Request $request): JsonResponse
+    {
+        return $this->jsonResponseMessage('User data loaded successfully', data: [
+           'user' => $request->user(),
+           'offers' => OffersController::allOffers(),
+        ]);
     }
 
     public function login(Request $request): JsonResponse
@@ -71,7 +99,8 @@ class UserController extends Controller
                 return $this->jsonResponseMessage('Login Successful', true, data: [
                     'name' => $user->name,
                     'email' => $user->email,
-                    'token' => $token
+                    'token' => $token,
+                    'offers' => OffersController::allOffers(),
                 ]);
             } else {
                 return $this->jsonResponseMessage('Invalid Password', false);

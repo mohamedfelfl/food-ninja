@@ -26,7 +26,7 @@ class User extends Model implements CanResetPassword
     public function sendPasswordResetNotification($token)
     {
         $url = 'localhost:8000/reset?token=' . $token;
-        route()
+        route();
         $this->notify(new ResetPasswordNotification($url));
     }
 }
