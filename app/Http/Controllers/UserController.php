@@ -33,20 +33,12 @@ class UserController extends Controller
             $user->name = $request->input('name');
             $user->email = $request->input('email');
             $user->password = Hash::make($request->input('password'));
-            //$user->addresses = $request->input('addresses');
-            /*            $data = [
-                            'name' => $user->name,
-                            'email' => $user->email,
-                            'verification_code' => $verificationCode,
-                        ];*/
             if ($user->save()) {
                 $token = $user->createToken("token")->plainTextToken;
                 //MailController::sendEmail($data);
                 return $this->jsonResponseMessage('User saved successfully', data: [
-                    'name' => $user->name,
-                    'email' => $user->email,
+                    User::where('email', $user->email)->first(),
                     'token' => $token,
-                    'offers' => OffersController::allOffers(),
                 ]);
             } else {
                 return $this->jsonResponseMessage('Something went wrong', false);
@@ -68,10 +60,8 @@ class UserController extends Controller
             $token = $user->createToken("token")->plainTextToken;
             //MailController::sendEmail($data);
             return $this->jsonResponseMessage('User saved successfully', data: [
-                'name' => $user->name,
-                'email' => $user->email,
+                $user,
                 'token' => $token,
-                'offers' => OffersController::allOffers(),
                 ]);
             } else {
                 return $this->jsonResponseMessage('Something went wrong', false);
@@ -82,7 +72,6 @@ class UserController extends Controller
     {
         return $this->jsonResponseMessage('User data loaded successfully', data: [
            'user' => $request->user(),
-           'offers' => OffersController::allOffers(),
         ]);
     }
 
@@ -97,10 +86,8 @@ class UserController extends Controller
             if (Hash::check($request->input('password'), $user->password)) {
                 $token = $user->createToken("token")->plainTextToken;
                 return $this->jsonResponseMessage('Login Successful', true, data: [
-                    'name' => $user->name,
-                    'email' => $user->email,
+                    $user,
                     'token' => $token,
-                    'offers' => OffersController::allOffers(),
                 ]);
             } else {
                 return $this->jsonResponseMessage('Invalid Password', false);
