@@ -10,7 +10,7 @@ Route::group(['prefix' => 'user',], function () {
     Route::post('/reset', [UserController::class, 'resetPassword'])->middleware('guest');
     Route::post('/save', [UserController::class, 'save']);
     Route::post('/login', [UserController::class, 'login']);
-    Route::post('/custom-login', [UserController::class, 'customLogin']);
+    Route::post('/firebase', [UserController::class, 'firebaseLogin']);
     Route::middleware('auth:sanctum')->get('/get', [UserController::class, 'getUserData']);
     //Route::middleware('auth:sanctum')->post('/mail', [UserController::class, 'changeEmail']);
 });

@@ -47,25 +47,29 @@ class UserController extends Controller
 
     }
 
-    public function customLogin(Request $request)
+    public function firebaseLogin(Request $request)
     {
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
         ]);
-        $user = new User();
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        if ($user->save()) {
-            $token = $user->createToken("token")->plainTextToken;
-            //MailController::sendEmail($data);
-            return $this->jsonResponseMessage('User saved successfully', data: [
-                $user,
+        $user = User::where('email', $request->input('email'))->first();
+        if ($user) {
+          $token = $user->createToken("token")->plainTextToken;
+          return $this->jsonResponseMessage('Firebase user already exist', data: [$user, 'token' => $token,]);
+        } else {
+          $firebaseUser = new User();
+          $firebaseUser->name = $request->input('name');
+          $firebaseUser->email = $request->input('email');
+          $token = $user->createToken("token")->plainTextToken;
+          $firebaseUser->save();
+          return $this->jsonResponseMessage('User saved successfully', data: [
+                 User::where('email', $user->email)->first(),
                 'token' => $token,
                 ]);
-            } else {
+    
                 return $this->jsonResponseMessage('Something went wrong', false);
-            }
+        }
     }
 
     public function getUserData(Request $request): JsonResponse
@@ -86,7 +90,7 @@ class UserController extends Controller
             if (Hash::check($request->input('password'), $user->password)) {
                 $token = $user->createToken("token")->plainTextToken;
                 return $this->jsonResponseMessage('Login Successful', true, data: [
-                    $user,
+                    User::where('email', $user->email)->first(),
                     'token' => $token,
                 ]);
             } else {

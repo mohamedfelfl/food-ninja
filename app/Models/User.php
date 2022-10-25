@@ -31,6 +31,11 @@ class User extends \TCG\Voyager\Models\User
     protected $hidden = [
         'password',
         'remember_token',
+        'role_id',
+        'settings',
+        'avatar',
+        'created_at',
+        'updated_at',
     ];
 
     /**
