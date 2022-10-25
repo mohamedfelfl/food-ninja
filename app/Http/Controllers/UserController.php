@@ -64,7 +64,7 @@ class UserController extends Controller
           $firebaseUser->save();
           $token = $firebaseUser->createToken("token")->plainTextToken;
           return $this->jsonResponseMessage('User saved successfully', data: [
-                 User::where('email', $user->email)->first(),
+                 User::where('email', $firebaseUser->email)->first(),
                 'token' => $token,
                 ]);
 
