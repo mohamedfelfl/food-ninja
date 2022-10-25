@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string("image")->nullable();
             $table->string("birthdate")->nullable();
             $table->boolean("gender")->nullable();
-            $table->boolean("receive_offers")->nullable();
+            $table->boolean("receive_offers")->default(false);
             $table->string("addresses")->nullable();
             $table->string("phone")->nullable();
             $table->string("phone2")->nullable();
