@@ -56,7 +56,7 @@ class UserController extends Controller
         $user = User::where('email', $request->input('email'))->first();
         if ($user) {
           $token = $user->createToken("token")->plainTextToken;
-          return $this->jsonResponseMessage('Firebase user already exist', data: [$user, 'token' => $token,]);
+          return $this->jsonResponseMessage('Firebase user already exist', data: ['user' => $user, 'token' => $token,]);
         } else {
           $firebaseUser = new User();
           $firebaseUser->name = $request->input('name');
