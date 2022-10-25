@@ -75,6 +75,7 @@ class UserController extends Controller
     {
         return $this->jsonResponseMessage('User data loaded successfully', data: [
            'user' => $request->user(),
+           'token' => $request->bearerToken(),
         ]);
     }
 
