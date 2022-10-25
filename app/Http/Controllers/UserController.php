@@ -37,7 +37,7 @@ class UserController extends Controller
                 $token = $user->createToken("token")->plainTextToken;
                 //MailController::sendEmail($data);
                 return $this->jsonResponseMessage('User saved successfully', data: [
-                    User::where('email', $user->email)->first(),
+                    'user' => User::where('email', $user->email)->first(),
                     'token' => $token,
                 ]);
             } else {
@@ -47,7 +47,7 @@ class UserController extends Controller
 
     }
 
-    public function firebaseLogin(Request $request)
+    public function firebaseLogin(Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required',
@@ -64,7 +64,7 @@ class UserController extends Controller
           $firebaseUser->save();
           $token = $firebaseUser->createToken("token")->plainTextToken;
           return $this->jsonResponseMessage('User saved successfully', data: [
-                 User::where('email', $firebaseUser->email)->first(),
+                'user' => User::where('email', $firebaseUser->email)->first(),
                 'token' => $token,
                 ]);
 
@@ -89,7 +89,7 @@ class UserController extends Controller
             if (Hash::check($request->input('password'), $user->password)) {
                 $token = $user->createToken("token")->plainTextToken;
                 return $this->jsonResponseMessage('Login Successful', true, data: [
-                    User::where('email', $user->email)->first(),
+                    'user' => User::where('email', $user->email)->first(),
                     'token' => $token,
                 ]);
             } else {
