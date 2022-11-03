@@ -3,6 +3,7 @@
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\OffersController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserUpdateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,11 @@ Route::group(['prefix' => 'meals'] , function (){
     Route::post('/delete', [MealController::class, 'delete']);
     Route::post('/get', [MealController::class, 'get']);
     Route::get('/all', [MealController::class, 'allMeals']);
+});
+Route::group(['prefix' => 'update', 'middleware' => 'auth:sanctum'], function (){
+    Route::post('/basic', [UserUpdateController::class, 'updateBasicInfo']);
+    Route::post('/email', [UserUpdateController::class, 'updateBasicInfo']);
+    Route::post('/password', [UserUpdateController::class, 'updateBasicInfo']);
+    Route::post('/address', [UserUpdateController::class, 'updateBasicInfo']);
+    Route::post('/card', [UserUpdateController::class, 'updateBasicInfo']);
 });

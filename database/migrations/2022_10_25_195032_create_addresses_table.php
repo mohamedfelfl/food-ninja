@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string("building")->nullable();
             $table->string("floor")->nullable();
             $table->string("flat")->nullable();
+            $table->boolean("is_main")->default(false);
             $table->string("special_characters")->nullable();
             $table->timestamps();
         });

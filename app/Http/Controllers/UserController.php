@@ -33,7 +33,7 @@ class UserController extends Controller
             $user->name = $request->input('name');
             $user->email = $request->input('email');
             $user->password = Hash::make($request->input('password'));
-            $user->recieve_offers = $request->input('receive_offers');
+            $user->receive_offers = $request->input('receive_offers');
             if ($user->save()) {
                 $token = $user->createToken("token")->plainTextToken;
                 //MailController::sendEmail($data);

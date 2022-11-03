@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string("image")->nullable();
             $table->string("birthdate")->nullable();
-            $table->boolean("gender")->nullable();
+            $table->boolean("gender")->default(false);
             $table->boolean("receive_offers")->default(false);
             $table->string("addresses")->nullable();
             $table->string("phone")->nullable();
