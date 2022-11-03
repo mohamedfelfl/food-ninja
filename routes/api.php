@@ -31,8 +31,8 @@ Route::group(['prefix' => 'meals'] , function (){
 });
 Route::group(['prefix' => 'update', 'middleware' => 'auth:sanctum'], function (){
     Route::post('/basic', [UserUpdateController::class, 'updateBasicInfo']);
-    Route::post('/email', [UserUpdateController::class, 'updateBasicInfo']);
-    Route::post('/password', [UserUpdateController::class, 'updateBasicInfo']);
-    Route::post('/address', [UserUpdateController::class, 'updateBasicInfo']);
-    Route::post('/card', [UserUpdateController::class, 'updateBasicInfo']);
+    Route::post('/email', [UserUpdateController::class, 'updateEmail']);
+    Route::post('/password', [UserUpdateController::class, 'updatePassword']);
+    Route::post('/address', [UserUpdateController::class, 'updateAddresses']);
+    Route::post('/card', [UserUpdateController::class, 'updateCards']);
 });
