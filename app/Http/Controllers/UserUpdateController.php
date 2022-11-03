@@ -22,7 +22,7 @@ class UserUpdateController extends Controller
         $user = $request->user();
         $user->name = $request->input('name');
         $user->birthdate = $request->input('birthdate');
-        $user->gender = $request->input('name');
+        $user->gender = $request->input('gender');
         $user->receive_offers = $request->input('receive_offers');
         if($user->save()){
             $token = $user->createToken("token")->plainTextToken;
