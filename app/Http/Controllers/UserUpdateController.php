@@ -16,13 +16,13 @@ class UserUpdateController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'birthdate' => 'required|date',
             'gender' => 'required',
             'receive_offers' => 'required',
         ]);
         $user = $request->user();
         $user->name = $request->input('name');
-        $user->birthdate = $request->input('birthdate');
+        if($request->has('birthdate'))
+            $user->birthdate = $request->input('birthdate');
         $user->gender = $request->input('gender');
         $user->receive_offers = $request->input('receive_offers');
         if($user->save()){
