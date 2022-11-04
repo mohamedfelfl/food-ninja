@@ -37,17 +37,25 @@ class UserUpdateController extends Controller
     public function updatePassword(Request $request): JsonResponse
     {
         $request->validate([
-            'password' => 'required',
+            'old_password' => 'required',
+            'new_password' => 'required',
         ]);
         $user = $request->user();
-        $user->password = Hash::make($request->input('password'));
-        if($user->save()){
-            return $this->jsonResponseMessage('User updated successfully', data: [
-                'user' => User::where('email', $user->email)->first(),
-            ]);
+        $isPasswordCorrect = Hash::check($request->input('old_password'), $user->password);
+        if($isPasswordCorrect){
+            $user->password = Hash::make($request->input('new_password'));
+            if($user->save()){
+                return $this->jsonResponseMessage('User updated successfully', data: [
+                    'user' => User::where('email', $user->email)->first(),
+                ]);
+            }else{
+                return $this->jsonResponseMessage('Something went wrong', false);
+            }
         }else{
-            return $this->jsonResponseMessage('Something went wrong', false);
+            return $this->jsonResponseMessage('Incorrect password', false);
         }
+
+
 
     }
     public function updateEmail(Request $request): JsonResponse
