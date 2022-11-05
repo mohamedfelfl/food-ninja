@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\OffersController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserUpdateController;
 use Illuminate\Http\Request;
@@ -35,4 +36,9 @@ Route::group(['prefix' => 'update', 'middleware' => 'auth:sanctum'], function ()
     Route::post('/password', [UserUpdateController::class, 'updatePassword']);
     Route::post('/address', [UserUpdateController::class, 'updateAddresses']);
     Route::post('/card', [UserUpdateController::class, 'updateCards']);
+});
+Route::group(['prefix' => 'orders', 'middleware' => 'auth:sanctum'], function(){
+    Route::get('/get', [OrderController::class, 'getOrders']);
+    Route::post('/status', [OrderController::class, 'updateOrderStatus']);
+    Route::get('/add', [OrderController::class, 'addOrder']);
 });
