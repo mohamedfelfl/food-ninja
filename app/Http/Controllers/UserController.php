@@ -16,6 +16,12 @@ class UserController extends Controller
 {
     use response;
 
+    public function logout(Request $request): JsonResponse
+    {
+        $request->user()->revoke();
+        return $this->jsonResponseMessage('User logged out', true);
+
+    }
     public function save(Request $request): JsonResponse
     {
         $request->validate([

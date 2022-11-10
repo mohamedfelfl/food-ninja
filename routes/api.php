@@ -14,7 +14,7 @@ Route::group(['prefix' => 'user',], function () {
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/firebase', [UserController::class, 'firebaseLogin']);
     Route::middleware('auth:sanctum')->get('/get', [UserController::class, 'getUserData']);
-    //Route::middleware('auth:sanctum')->post('/mail', [UserController::class, 'changeEmail']);
+    Route::middleware('auth:sanctum')->get('/logout', [UserController::class, 'logout']);
 });
 Route::group(['prefix' => 'offers'] , function (){
     Route::post('/add', [OffersController::class, 'add']);
