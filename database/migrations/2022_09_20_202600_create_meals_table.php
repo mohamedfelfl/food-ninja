@@ -16,15 +16,15 @@ return new class extends Migration
         Schema::create('meals', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->double('price')->unique();
+            $table->double('price')->default(0);
             $table->string('description');
             $table->string('image');
             $table->string("type");
             $table->string("restaurant");
             $table->double("rating");
             $table->string("tags");
-            $table->string("options");
-            $table->string("testimonials");
+            $table->string("options")->nullable();
+            $table->string("testimonials")->nullable();
             $table->timestamps();
         });
     }
