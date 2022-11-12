@@ -119,7 +119,7 @@ class UserUpdateController extends Controller
         ]);
         $user= $request->user();
         $path = $request->file('image')->store('public/user_profile_images');
-        $user->image_url = str_replace('public', 'storage', asset($path)->replace());
+        $user->image_url = str_replace('public', 'storage', asset($path));
 
         if($user->save()){
             return $this->jsonResponseMessage('User updated successfully', data: [
