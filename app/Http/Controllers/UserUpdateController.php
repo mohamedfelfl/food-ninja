@@ -118,8 +118,9 @@ class UserUpdateController extends Controller
             'image' => 'required|file',
         ]);
         $user= $request->user();
-        $path = $request->file('image')->store('storage/user_profile_images');
-        $user->image_url = asset($path);
+        $path = $request->file('image')->store('public/user_profile_images');
+        $user->image_url = str_replace('public', 'storage', asset($path)->replace());
+
         if($user->save()){
             return $this->jsonResponseMessage('User updated successfully', data: [
                 'user' => User::where('email', $user->email)->first(),
