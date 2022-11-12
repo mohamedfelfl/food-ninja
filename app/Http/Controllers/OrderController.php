@@ -12,6 +12,12 @@ class OrderController extends Controller
 {
     use response;
 
+    public function getAllOrders(Request $request){
+        $orders = Order::where('user_id', $request->user()->id);
+        return $this->jsonResponseMessage('User orders' , data:  ['orders' => $orders]);
+
+    }
+
     public function addOrder(Request $request): JsonResponse
     {
         $request->validate([

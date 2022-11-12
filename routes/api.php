@@ -42,4 +42,5 @@ Route::group(['prefix' => 'orders', 'middleware' => 'auth:sanctum'], function(){
     Route::get('/get', [OrderController::class, 'getOrders']);
     Route::post('/status', [OrderController::class, 'updateOrderStatus']);
     Route::get('/add', [OrderController::class, 'addOrder']);
+    Route::get('/all', [OrderController::class, 'getAllOrders']);
 });
