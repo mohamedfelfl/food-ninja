@@ -4,6 +4,11 @@
 /public/storage
 /storage/*.key
 /vendor
+.DS_Store
+.env
+README.txt
+project.json
+package-lock.json
 .env.backup
 .phpunit.result.cache
 Homestead.json
