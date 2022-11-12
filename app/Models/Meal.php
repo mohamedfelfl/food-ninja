@@ -39,5 +39,7 @@ class Meal extends Model
 
     protected $casts = [
         'tags' => 'array',
+        'testimonials' => 'array',
+        'options' => 'array',
     ];
 }
