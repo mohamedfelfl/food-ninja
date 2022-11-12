@@ -16,4 +16,11 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+    public function run()
+{
+    Order::factory()
+            ->count(50)
+            ->user_id(1)
+            ->create();
+}
 }
