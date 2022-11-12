@@ -7,6 +7,7 @@ use App\Traits\response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserUpdateController extends Controller
 {
@@ -117,8 +118,8 @@ class UserUpdateController extends Controller
             'image' => 'required|file',
         ]);
         $user= $request->user();
-        $path = $request->file('image')->store('assets');
-        $user->image_url = $path;
+        $path = $request->file('image')->store('user_profile_images');
+        $user->image_url = Storage::url($path);
         if($user->save()){
             return $this->jsonResponseMessage('User updated successfully', data: [
                 'user' => User::where('email', $user->email)->first(),
