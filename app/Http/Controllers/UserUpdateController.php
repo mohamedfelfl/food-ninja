@@ -118,7 +118,7 @@ class UserUpdateController extends Controller
             'image' => 'required|file',
         ]);
         $user= $request->user();
-        $path = $request->file('image')->store('user_profile_images');
+        $path = $request->file('image')->store('storage/user_profile_images');
         $user->image_url = asset($path);
         if($user->save()){
             return $this->jsonResponseMessage('User updated successfully', data: [
