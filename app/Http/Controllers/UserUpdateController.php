@@ -130,8 +130,5 @@ class UserUpdateController extends Controller
         }
     }
 
-    public function getImage()
-    {
-        return Storage::get();
-    }
+
 }
