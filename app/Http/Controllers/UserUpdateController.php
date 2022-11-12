@@ -63,6 +63,10 @@ class UserUpdateController extends Controller
         $request->validate([
             'email' => 'required',
         ]);
+        $isEmailExists = User::where('email', $request->input('email'))->first();
+        if($isEmailExists){
+            return $this->jsonResponseMessage('Email already exists', false);
+        }
         $user = $request->user();
         $user->email = $request->input('email');
         if($user->save()){
@@ -106,4 +110,22 @@ class UserUpdateController extends Controller
         }
 
     }
+
+    public function updateImage(Request $request): JsonResponse
+    {
+        $request->validate([
+            'image' => 'required|file',
+        ]);
+        $user= $request->user();
+        $path = $request->file('image')->store('assets');
+        $user->image_url = $path;
+        if($user->save()){
+            return $this->jsonResponseMessage('User updated successfully', data: [
+                'user' => User::where('email', $user->email)->first(),
+            ]);
+        }else{
+            return $this->jsonResponseMessage('Something went wrong', false);
+        }
+    }
+
 }

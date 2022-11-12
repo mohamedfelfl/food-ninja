@@ -70,6 +70,7 @@ class User extends \TCG\Voyager\Models\User
         'remember_token',
         'role_id',
         'settings',
+        'image',
         'avatar',
         'created_at',
         'updated_at',

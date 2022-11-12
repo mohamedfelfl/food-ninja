@@ -36,6 +36,7 @@ Route::group(['prefix' => 'update', 'middleware' => 'auth:sanctum'], function ()
     Route::post('/password', [UserUpdateController::class, 'updatePassword']);
     Route::post('/address', [UserUpdateController::class, 'updateAddresses']);
     Route::post('/card', [UserUpdateController::class, 'updateCards']);
+    Route::post('/image', [UserUpdateController::class, 'updateImage']);
 });
 Route::group(['prefix' => 'orders', 'middleware' => 'auth:sanctum'], function(){
     Route::get('/get', [OrderController::class, 'getOrders']);
