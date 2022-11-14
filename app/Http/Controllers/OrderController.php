@@ -13,7 +13,7 @@ class OrderController extends Controller
     use response;
 
     public function getAllOrders(Request $request){
-        $orders = Order::where('user_id', $request->user()->id);
+        $orders = Order::where('user_id', $request->user()->id)->get();
         return $this->jsonResponseMessage('User orders' , data:  ['orders' => $orders]);
 
     }
