@@ -20,8 +20,10 @@ class OrderFactory extends Factory
         return [
             'user_id' => '1',
             'name' => fake()->name(),
+            'date' => fake()->date(),
+            'image_url' => fake()->imageUrl(),
             'price' => fake()->randomFloat(2, 10, 50),
-            'status' => fake()->randomNumber(2),
+            'status' => fake()->numberBetween(0, 2),
         ];
     }
 

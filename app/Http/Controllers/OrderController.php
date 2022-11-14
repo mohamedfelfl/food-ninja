@@ -29,6 +29,8 @@ class OrderController extends Controller
         $order->user_id = $request->user()->id;
         $order->name = $request->input('name');
         $order->price = $request->input('price');
+        $order->date = $request->input('date');
+        $order->image_url = $request->input('image_url');
         if($order->save()){
             return $this->jsonResponseMessage('Order added successfully' , data:  ['order' => $order]);
         }else{
