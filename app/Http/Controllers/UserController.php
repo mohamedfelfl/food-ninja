@@ -18,7 +18,7 @@ class UserController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        $request->user()->tokens()->delete();
         return $this->jsonResponseMessage('User logged out', true);
 
     }
