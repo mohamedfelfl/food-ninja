@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
             $table->string("title")->unique();
+            $table->float("amount")->default(0);
+            $table->string("description");
             $table->string("start_date");
             $table->string("end_date");
             $table->string("foods_included");
